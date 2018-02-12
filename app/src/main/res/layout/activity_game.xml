@@ -10,5 +10,16 @@
     tools:context="com.saurabhtotey.timeshot.Game"
     tools:deviceIds="wear">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ball"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/circle" />
+    </FrameLayout>
+
 </android.support.wear.widget.BoxInsetLayout>
 
