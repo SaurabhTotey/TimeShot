@@ -20,8 +20,14 @@ class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float
     var currentX: Float = initialX
     var currentY: Float = initialY
     val speed = 1
-    private var velocityX: Float = 0.toFloat()
-    private var velocityY: Float = 0.toFloat()
+    var velocityX: Float = 0.toFloat()
+        private set(value) {
+            field = value
+        }
+    var velocityY: Float = 0.toFloat()
+        private set(value) {
+            field = value
+        }
     var isFinished = false
 
     /**

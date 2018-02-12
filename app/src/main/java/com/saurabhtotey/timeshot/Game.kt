@@ -52,10 +52,14 @@ class Game : WearableActivity() {
      * If a touch is detected, ensures that the gestureDetector can handle the motion
      */
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        if (this.gestureDetector.onTouchEvent(event)) {
-            return true
+        val bounds = Rect().also { this.ball.getHitRect(it) }
+        val ballBeingFlung = bounds.contains(event!!.x.roundToInt(), event.y.roundToInt())
+        this.gestureDetector.onTouchEvent(event)
+        return if (ballBeingFlung) {
+            true
+        } else {
+            super.dispatchTouchEvent(event)
         }
-        return super.dispatchTouchEvent(event)
     }
 
     /**
