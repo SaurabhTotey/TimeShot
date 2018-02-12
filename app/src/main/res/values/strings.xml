@@ -1,0 +1,8 @@
+<!--
+Any strings defined here are overridden by strings in round/strings
+-->
+<resources>
+    <string name="app_name">Time Shot</string>
+    <string name="title_activity_game">Game</string>
+    <string name="main_menu_play_game_normal">Play Game</string>
+</resources>
