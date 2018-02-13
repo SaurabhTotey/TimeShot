@@ -1,7 +1,8 @@
 package com.saurabhtotey.timeshot
 
-import kotlin.math.pow
-import kotlin.math.sqrt
+import java.sql.Time
+import java.util.*
+import kotlin.math.*
 
 /**
  * A set of enums that represent the different gamemodes which affects gameplay and game type
@@ -29,6 +30,7 @@ class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float
             field = value
         }
     var isFinished = false
+    val timeToShootFor = Time((Math.random() * 13).toInt(), (Math.random() * 60).toInt(), (Math.random() * 60).toInt())
 
     /**
      * Performs one game tick and moves the ball
@@ -44,6 +46,22 @@ class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float
         } else {
             this.currentX <= 0 || this.currentY <= 0 || this.currentX >= this.length || this.currentY >= this.length
         }
+    }
+
+    /**
+     * Gets the score for the game; should only be called after game is finished
+     * TODO: doesn't work
+     */
+    fun score(): Int? {
+        if (!this.isFinished) {
+            return null
+        }
+        fun angleOfTime(time: Time): Double {
+            return -2 * PI * (time.hours / 12 + time.minutes / (12 * 60) + time.seconds / (12 * 60 * 60)) + 5 * PI / 2
+        }
+        val ballAngle = atan2(this.currentY - this.initialY, this.currentX - this.initialX)
+        val timeAngle = angleOfTime(if (this.gameMode == GameMode.CURRENT) Time(Calendar.getInstance().time.time) else this.timeToShootFor)
+        return (abs(ballAngle - timeAngle) / (2 * PI) * 1000).roundToInt()
     }
 
     /**
