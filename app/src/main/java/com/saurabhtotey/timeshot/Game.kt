@@ -27,7 +27,7 @@ class Game : WearableActivity() {
         setContentView(R.layout.activity_game)
         this.ball = findViewById(R.id.ball)
         val displaySize = Point().also { windowManager.defaultDisplay.getSize(it) }
-        this.gameState = GameState(GameMode.values().firstOrNull { it.label == intent.getStringExtra("mode") }!!, displaySize.x.toFloat() / 2, displaySize.y.toFloat() / 2)
+        this.gameState = GameState(GameMode.values().firstOrNull { it.label == intent.getStringExtra("mode") }!!, displaySize.x.toFloat() / 2, displaySize.y.toFloat() / 2, true, displaySize.x)
         this.gestureDetector = GestureDetectorCompat(this, SwipeHandler(this.gameState, this.ball))
         Thread {
             while (!this.gameState.isFinished) {

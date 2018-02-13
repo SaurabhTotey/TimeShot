@@ -15,11 +15,11 @@ const val gameSpeed: Long = 1000 / 20 //The delay between ticks for the game in 
 /**
  * A class that represents how the game is currently
  */
-class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float) {
+class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float, val isRound: Boolean, val length: Int) {
 
     var currentX: Float = initialX
     var currentY: Float = initialY
-    val speed = 1
+    val speed = 5
     var velocityX: Float = 0.toFloat()
         private set(value) {
             field = value
@@ -39,6 +39,11 @@ class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float
         }
         this.currentX += this.velocityX
         this.currentY += this.velocityY
+        this.isFinished = if (this.isRound) {
+            (this.initialX - this.currentX).pow(2) + (this.initialY - this.currentY).pow(2) >= (this.length / 2).toDouble().pow(2)
+        } else {
+            this.currentX <= 0 || this.currentY <= 0 || this.currentX >= this.length || this.currentY >= this.length
+        }
     }
 
     /**
