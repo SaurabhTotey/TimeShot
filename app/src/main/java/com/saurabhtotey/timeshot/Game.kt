@@ -30,11 +30,13 @@ class Game : WearableActivity() {
         this.gameState = GameState(GameMode.values().firstOrNull { it.label == intent.getStringExtra("mode") }!!, displaySize.x.toFloat() / 2, displaySize.y.toFloat() / 2, true, displaySize.x)
         this.gestureDetector = GestureDetectorCompat(this, SwipeHandler(this.gameState, this.ball))
         Thread {
+            //TODO: show the time that the player needs to shoot for
             while (!this.gameState.isFinished) {
                 this.gameState.update()
                 this.updateBallPos()
                 Thread.sleep(gameSpeed)
             }
+            this.gameState.score() //TODO: do something with this
         }.start()
     }
 

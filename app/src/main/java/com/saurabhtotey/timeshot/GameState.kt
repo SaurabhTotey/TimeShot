@@ -57,10 +57,20 @@ class GameState(val gameMode: GameMode, val initialX: Float, val initialY: Float
             return null
         }
         fun angleOfTime(time: Time): Double {
-            return -2 * PI * (time.hours / 12 + time.minutes / (12 * 60) + time.seconds / (12 * 60 * 60)) + 5 * PI / 2
+            return -2 * PI * (time.hours / 12 + time.minutes / (12 * 60) + time.seconds / (12 * 60 * 60)) + PI / 2
         }
-        val ballAngle = atan2(this.currentY - this.initialY, this.currentX - this.initialX)
-        val timeAngle = angleOfTime(if (this.gameMode == GameMode.CURRENT) Time(Calendar.getInstance().time.time) else this.timeToShootFor)
+        fun processAngle(angle: Double): Double {
+            var a = angle
+            while (a < 0) {
+                a += 2 * PI
+            }
+            while (a > 2 * PI) {
+                a -= 2 * PI
+            }
+            return a
+        }
+        val ballAngle = processAngle(atan2(this.initialY - this.currentY, this.currentX - this.initialX).toDouble()) //Y is inverted because coordinates go top down
+        val timeAngle = processAngle(angleOfTime(if (this.gameMode == GameMode.CURRENT) Time(Calendar.getInstance().time.time) else this.timeToShootFor))
         return (abs(ballAngle - timeAngle) / (2 * PI) * 1000).roundToInt()
     }
 
