@@ -36,7 +36,7 @@ class Game : WearableActivity() {
                 this.matchScreenToGameState()
                 Thread.sleep(gameSpeed)
             }
-            this.gameState.score() //TODO: do something with this
+            this.matchScreenToGameState()
         }.start()
     }
 
@@ -46,6 +46,9 @@ class Game : WearableActivity() {
     private fun matchScreenToGameState() {
         runOnUiThread {
             findViewById<TextView>(R.id.timeBox).setText(this.gameState.timeToShootFor.toString()) //Using property access syntax (.text = ) errors
+            if (this.gameState.isFinished) {
+                findViewById<TextView>(R.id.scoreBox).setText(this.gameState.score()!!.toString())
+            }
             this.ball.x = this.gameState.currentX - ball.width / 2
             this.ball.y = this.gameState.currentY - ball.height / 2
         }

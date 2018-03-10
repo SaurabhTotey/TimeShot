@@ -21,11 +21,19 @@
             android:src="@drawable/circle" />
 
         <TextView
+            android:id="@+id/scoreBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="" />
+
+        <TextView
             android:id="@+id/timeBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text=""
-            android:layout_centerInParent="true" />
+            android:layout_above="@+id/scoreBox" />
 
     </RelativeLayout>
 
