@@ -1,70 +1,34 @@
 package com.saurabhtotey.timeshot
 
-import java.util.*
 import kotlin.math.*
 
 /**
- * A set of enums that represent the different gamemodes which affects gameplay and game type
- */
-enum class GameMode(val label: String) {
-    RANDOM("RANDOM"), CURRENT("CURRENT")
-}
-
-/**
- * A small class to hold time information
- */
-class Time(gameMode: GameMode) {
-    var hours = if (gameMode == GameMode.RANDOM) (Math.random() * 25).toInt() else Calendar.getInstance().time.hours
-        set(value) {
-            field = value % 24
-        }
-    var minutes = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.minutes
-        set(value) {
-            field = value
-            if (field > 60) {
-                field = value % 60
-                this.hours++
-            }
-        }
-    var seconds = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.seconds
-        set(value) {
-            field = value
-            if (field > 60) {
-                field = value % 60
-                this.minutes++
-            }
-        }
-    fun angle(): Double {
-        return -2 * PI * (this.hours / 12 + this.minutes / (12 * 60) + this.seconds / (12 * 60 * 60)) + PI / 2
-    }
-    override fun toString(): String {
-        return "${this.hours}:${this.minutes}:${this.seconds}"
-    }
-}
-
-const val gameSpeed: Long = 1000 / 20 //The delay between ticks for the game in milliseconds
-
-/**
  * A class that represents how the game is currently
+ * Is created with the type of game, the starting coordinates, whether the screen is round or not, and the length of the screen (radius or square side length)
  */
 class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, val isRound: Boolean, val length: Int) {
 
-    var currentX: Float = initialX
-    var currentY: Float = initialY
-    val speed = 5
-    var velocityX: Float = 0.toFloat()
+    var currentX: Float = initialX //The ball's current X position
+    var currentY: Float = initialY //The ball's current Y position
+    val speed = 5 //The ball's max speed; TODO: scale off of length
+    var velocityX: Float = 0.toFloat() //The ball's X velocity; can't be changed outside of this class
         private set(value) {
             field = value
         }
-    var velocityY: Float = 0.toFloat()
+    var velocityY: Float = 0.toFloat() //The ball's Y velocity; can't be changed outside of this class
         private set(value) {
             field = value
         }
     var isFinished = false
     val timeToShootFor = Time(gameMode)
+    var ballInMotion = false
+        get() {
+            return field && !this.isFinished
+        }
 
     /**
-     * When the gamestate is made, it increments the time
+     * When the game is created, it starts a new thread that continually updates the game's time by 1 second every second
+     * TODO: app doesn't work when this included; fix
      */
     init {
 //        while (!this.isFinished) {
@@ -75,6 +39,7 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
 
     /**
      * Performs one game tick and moves the ball
+     * Also calculates if the game is finished or not
      */
     fun update() {
         if (this.isFinished) {
@@ -91,6 +56,7 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
 
     /**
      * Gets the score for the game; should only be called after game is finished
+     * If called before game finish, returns null
      * TODO: doesn't work
      */
     fun score(): Int? {
@@ -116,6 +82,7 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
      * Receives component velocities and sets the ball's velocity as such
      */
     fun swipe(velocityX: Float, velocityY: Float) {
+        this.ballInMotion = true
         val magnitude = sqrt(velocityY.pow(2) + velocityX.pow(2))
         this.velocityX = this.speed * velocityX / magnitude
         this.velocityY = this.speed * velocityY / magnitude

@@ -19,6 +19,9 @@ class MainMenu : WearableActivity() {
         setContentView(R.layout.activity_main_menu)
     }
 
+    /**
+     * A function that moves the activity from this current activity to the next one
+     */
     private fun playGame(mode: GameMode) {
         val nextActivity = Intent(this, Game::class.java)
         nextActivity.putExtra("mode", mode.label)
@@ -26,15 +29,14 @@ class MainMenu : WearableActivity() {
     }
 
     /**
-     * A function that gets called when the user presses the play game button
-     * Starts the game activity
+     * A function that gets called when the user presses the play random game button; starts a game with a random time
      */
     fun playRandom(v: View) {
         playGame(GameMode.RANDOM)
     }
 
     /**
-     * TODO: documentation
+     * A function that gets called when the user presses the play current game button; starts a game with the current time
      */
     fun playCurrent(v: View) {
         playGame(GameMode.CURRENT)

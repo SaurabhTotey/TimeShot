@@ -41,7 +41,9 @@ class Game : WearableActivity() {
     }
 
     /**
-     * Sets the ball's position to what is specified by in gameState
+     * Updates the graphics on the watch screen to accurately represent the game state
+     * Manages showing the ball in the correct location and showing the game's time
+     * Also displays the score if the game is finished
      */
     private fun matchScreenToGameState() {
         runOnUiThread {
@@ -56,12 +58,13 @@ class Game : WearableActivity() {
 
     /**
      * If a touch is detected, ensures that the gestureDetector can handle the motion
+     * If the ball is touched or is in motion, the touch event is consumed, otherwise, the watch handles the event
      */
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
         val bounds = Rect().also { this.ball.getHitRect(it) }
         val ballBeingFlung = bounds.contains(event!!.x.roundToInt(), event.y.roundToInt())
         this.gestureDetector.onTouchEvent(event)
-        return if (ballBeingFlung) {
+        return if (ballBeingFlung || this.gameState.ballInMotion) {
             true
         } else {
             super.dispatchTouchEvent(event)
