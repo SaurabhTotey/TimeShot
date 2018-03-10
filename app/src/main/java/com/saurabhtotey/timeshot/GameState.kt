@@ -8,6 +8,7 @@ import kotlin.math.*
  */
 class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, val isRound: Boolean, val length: Int) {
 
+    private var numTicksSinceTimeUpdate = 0 //How many update calls the game has had before updating the game's time
     var currentX: Float = initialX //The ball's current X position
     var currentY: Float = initialY //The ball's current Y position
     val speed = 5 //The ball's max speed; TODO: scale off of length
@@ -27,30 +28,24 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
         }
 
     /**
-     * When the game is created, it starts a new thread that continually updates the game's time by 1 second every second
-     * TODO: app doesn't work when this included; fix
-     */
-    init {
-//        while (!this.isFinished) {
-//            Thread.sleep(1000)
-//            this.timeToShootFor.seconds += 1
-//        }
-    }
-
-    /**
      * Performs one game tick and moves the ball
-     * Also calculates if the game is finished or not
+     * Also calculates if the game is finished or not and updates the game's time if necessary
      */
     fun update() {
         if (this.isFinished) {
             return
         }
+        this.numTicksSinceTimeUpdate++
         this.currentX += this.velocityX
         this.currentY += this.velocityY
         this.isFinished = if (this.isRound) {
             (this.initialX - this.currentX).pow(2) + (this.initialY - this.currentY).pow(2) >= (this.length / 2).toDouble().pow(2)
         } else {
             this.currentX <= 0 || this.currentY <= 0 || this.currentX >= this.length || this.currentY >= this.length
+        }
+        if (this.numTicksSinceTimeUpdate * gameSpeed >= 1000) {
+            this.timeToShootFor.seconds++
+            this.numTicksSinceTimeUpdate = 0
         }
     }
 
