@@ -8,6 +8,7 @@ import android.support.wearable.activity.WearableActivity
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.ImageView
+import android.widget.TextView
 import kotlin.math.roundToInt
 
 /**
@@ -30,10 +31,9 @@ class Game : WearableActivity() {
         this.gameState = GameState(GameMode.values().firstOrNull { it.label == intent.getStringExtra("mode") }!!, displaySize.x.toFloat() / 2, displaySize.y.toFloat() / 2, true, displaySize.x)
         this.gestureDetector = GestureDetectorCompat(this, SwipeHandler(this.gameState, this.ball))
         Thread {
-            //TODO: show the time that the player needs to shoot for
             while (!this.gameState.isFinished) {
                 this.gameState.update()
-                this.updateBallPos()
+                this.matchScreenToGameState()
                 Thread.sleep(gameSpeed)
             }
             this.gameState.score() //TODO: do something with this
@@ -43,8 +43,9 @@ class Game : WearableActivity() {
     /**
      * Sets the ball's position to what is specified by in gameState
      */
-    private fun updateBallPos() {
+    private fun matchScreenToGameState() {
         runOnUiThread {
+            findViewById<TextView>(R.id.timeBox).setText(this.gameState.timeToShootFor.toString()) //Using property access syntax (.text = ) errors
             this.ball.x = this.gameState.currentX - ball.width / 2
             this.ball.y = this.gameState.currentY - ball.height / 2
         }

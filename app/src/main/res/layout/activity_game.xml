@@ -10,7 +10,7 @@
     tools:context="com.saurabhtotey.timeshot.Game"
     tools:deviceIds="wear">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,7 +19,15 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/circle" />
-    </FrameLayout>
+
+        <TextView
+            android:id="@+id/timeBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 
 </android.support.wear.widget.BoxInsetLayout>
 
