@@ -14,12 +14,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Space
+            android:id="@+id/middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
         <Button
             android:layout_width="500dp"
             android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:text="@string/main_menu_play_game_normal"
-            android:onClick="playGame"/>
+            android:layout_above="@id/middle"
+            android:text="@string/main_menu_play_game_random"
+            android:onClick="playRandom" />
+
+        <Button
+            android:layout_width="500dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/middle"
+            android:text="@string/main_menu_play_game_current"
+            android:onClick="playCurrent" />
+
     </RelativeLayout>
 
 </android.support.wear.widget.BoxInsetLayout>

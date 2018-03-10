@@ -19,14 +19,25 @@ class MainMenu : WearableActivity() {
         setContentView(R.layout.activity_main_menu)
     }
 
+    private fun playGame(mode: GameMode) {
+        val nextActivity = Intent(this, Game::class.java)
+        nextActivity.putExtra("mode", mode.label)
+        startActivity(nextActivity)
+    }
+
     /**
      * A function that gets called when the user presses the play game button
      * Starts the game activity
      */
-    fun playGame(v: View) {
-        val nextActivity = Intent(this, Game::class.java)
-        nextActivity.putExtra("mode", GameMode.RANDOM.label)
-        startActivity(nextActivity)
+    fun playRandom(v: View) {
+        playGame(GameMode.RANDOM)
+    }
+
+    /**
+     * TODO: documentation
+     */
+    fun playCurrent(v: View) {
+        playGame(GameMode.CURRENT)
     }
 
 }

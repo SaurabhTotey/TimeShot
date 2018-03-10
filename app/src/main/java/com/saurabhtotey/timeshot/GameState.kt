@@ -18,7 +18,7 @@ class Time(gameMode: GameMode) {
         set(value) {
             field = value % 24
         }
-    var minutes = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.hours
+    var minutes = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.minutes
         set(value) {
             field = value
             if (field > 60) {
@@ -26,7 +26,7 @@ class Time(gameMode: GameMode) {
                 this.hours++
             }
         }
-    var seconds = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.hours
+    var seconds = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.seconds
         set(value) {
             field = value
             if (field > 60) {
