@@ -8,7 +8,7 @@ import kotlin.math.PI
  */
 class Time(gameMode: GameMode) {
     //The hour component of the time; when set, will never exceed 12
-    var hours = if (gameMode == GameMode.RANDOM) (Math.random() * 13).toInt() else if (Calendar.getInstance().time.hours % 12 == 0) 12 else Calendar.getInstance().time.hours % 12
+    var hours = if (gameMode == GameMode.RANDOM) (Math.random() * 12).toInt() + 1 else if (Calendar.getInstance().time.hours % 12 == 0) 12 else Calendar.getInstance().time.hours % 12
         set(value) {
             field = value % 12
             if (field == 0) {

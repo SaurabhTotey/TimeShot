@@ -20,6 +20,16 @@
             android:layout_height="30dp"
             android:src="@drawable/circle" />
 
+        <Button
+            android:id="@+id/restartButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/scoreBox"
+            android:layout_centerHorizontal="true"
+            android:onClick="createRunningGame"
+            android:visibility="invisible"
+            android:src="@drawable/restart" />
+
         <TextView
             android:id="@+id/scoreBox"
             android:layout_width="wrap_content"

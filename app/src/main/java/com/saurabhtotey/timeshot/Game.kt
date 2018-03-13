@@ -7,6 +7,8 @@ import android.support.v4.view.GestureDetectorCompat
 import android.support.wearable.activity.WearableActivity
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import kotlin.math.roundToInt
@@ -21,12 +23,19 @@ class Game : WearableActivity() {
     private lateinit var gestureDetector: GestureDetectorCompat
 
     /**
-     * When the game is created, initializes the gamestate and starts running the game and updating graphics on a separate thread
+     * When this activity is created, it sets the activity's fields which are data it needs to access and then starts running the game
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         this.ball = findViewById(R.id.ball)
+        this.createRunningGame()
+    }
+
+    /**
+     * Creates a game and starts running it on a separate thread
+     */
+    fun createRunningGame(v: View? = null) {
         val displaySize = Point().also { windowManager.defaultDisplay.getSize(it) }
         this.gameState = GameState(GameMode.values().firstOrNull { it.label == intent.getStringExtra("mode") }!!, displaySize.x.toFloat() / 2, displaySize.y.toFloat() / 2, true, displaySize.x)
         this.gestureDetector = GestureDetectorCompat(this, SwipeHandler(this.gameState, this.ball))
@@ -50,6 +59,10 @@ class Game : WearableActivity() {
             findViewById<TextView>(R.id.timeBox).setText(this.gameState.timeToShootFor.toString()) //Using property access syntax (.text = ) errors
             if (this.gameState.isFinished) {
                 findViewById<TextView>(R.id.scoreBox).setText(this.gameState.score()!!.toString())
+                findViewById<Button>(R.id.restartButton).visibility = View.VISIBLE
+            } else {
+                findViewById<TextView>(R.id.scoreBox).setText("")
+                findViewById<Button>(R.id.restartButton).visibility = View.INVISIBLE
             }
             this.ball.x = this.gameState.currentX - ball.width / 2
             this.ball.y = this.gameState.currentY - ball.height / 2
