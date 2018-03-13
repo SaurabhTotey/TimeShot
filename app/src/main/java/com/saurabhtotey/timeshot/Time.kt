@@ -19,7 +19,7 @@ class Time(gameMode: GameMode) {
     var minutes = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.minutes
         set(value) {
             field = value
-            if (field > 60) {
+            if (field >= 60) {
                 field = value % 60
                 this.hours++
             }
@@ -28,7 +28,7 @@ class Time(gameMode: GameMode) {
     var seconds = if (gameMode == GameMode.RANDOM) (Math.random() * 60).toInt() else Calendar.getInstance().time.seconds
         set(value) {
             field = value
-            if (field > 60) {
+            if (field >= 60) {
                 field = value % 60
                 this.minutes++
             }
@@ -45,6 +45,11 @@ class Time(gameMode: GameMode) {
      * Returns this time as a pretty string
      */
     override fun toString(): String {
-        return "${this.hours}:${this.minutes}:${this.seconds}"
+        fun getAsString(value: Int): String {
+            val str = value.toString()
+            return if (str.length == 1) "0$str" else str
+
+        }
+        return "${getAsString(this.hours)}:${getAsString(this.minutes)}:${getAsString(this.seconds)}"
     }
 }
