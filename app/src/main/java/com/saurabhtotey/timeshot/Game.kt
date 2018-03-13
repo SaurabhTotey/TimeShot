@@ -1,7 +1,6 @@
 package com.saurabhtotey.timeshot
 
 import android.graphics.Point
-import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.view.GestureDetectorCompat
 import android.support.wearable.activity.WearableActivity
@@ -11,7 +10,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import kotlin.math.roundToInt
+import kotlin.math.pow
 
 /**
  * The actual game that is run
@@ -74,10 +73,9 @@ class Game : WearableActivity() {
      * If the ball is touched or is in motion, the touch event is consumed, otherwise, the watch handles the event
      */
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        val bounds = Rect().also { this.ball.getHitRect(it) }
-        val ballBeingFlung = bounds.contains(event!!.x.roundToInt(), event.y.roundToInt())
+        event!!
         this.gestureDetector.onTouchEvent(event)
-        return if (ballBeingFlung || this.gameState.ballInMotion) {
+        return if (SwipeHandler.touchTouchesBall(event, this.ball) || this.gameState.ballInMotion) {
             true
         } else {
             super.dispatchTouchEvent(event)
@@ -90,13 +88,22 @@ class Game : WearableActivity() {
     class SwipeHandler(var gameState: GameState, val ball: ImageView) : GestureDetector.SimpleOnGestureListener() {
 
         /**
+         * Defines a static function that determines whether a touch is touching the ball
+         * Gives the ball a larger area to be touched than just its current rectangle of location
+         */
+        companion object {
+            fun touchTouchesBall(event: MotionEvent, ball: ImageView): Boolean {
+                return (event.x - ball.x - ball.width / 2).pow(2) + (event.y - ball.y - ball.height / 2).pow(2) <= 2 * ball.width.toDouble().pow(2)
+            }
+        }
+
+        /**
          * When a fling happens in the center, the ball is shot towards that direction
          */
         override fun onFling(p0: MotionEvent?, p1: MotionEvent?, xVelocity: Float, yVelocity: Float): Boolean {
             p0!!
             p1!!
-            val bounds = Rect().also { this.ball.getHitRect(it) }
-            if (!bounds.contains(p0.x.roundToInt(), p0.y.roundToInt())) {
+            if (!touchTouchesBall(p0, this.ball)) {
                 return false
             }
             gameState.swipe(xVelocity, yVelocity)
