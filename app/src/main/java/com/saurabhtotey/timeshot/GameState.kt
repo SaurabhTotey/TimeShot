@@ -11,7 +11,7 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
     private var numTicksSinceTimeUpdate = 0 //How many update calls the game has had before updating the game's time
     var currentX: Float = initialX //The ball's current X position
     var currentY: Float = initialY //The ball's current Y position
-    val speed = length / 25 //The ball's max speed; TODO: scale off of length
+    val speed = length / 25 //The ball's max speed
     var velocityX: Float = 0.toFloat() //The ball's X velocity; can't be changed outside of this class
         private set(value) {
             field = value
@@ -52,25 +52,15 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
     /**
      * Gets the score for the game; should only be called after game is finished
      * If called before game finish, returns null
-     * TODO: doesn't work
      */
     fun score(): Int? {
         if (!this.isFinished) {
             return null
         }
-        fun processAngle(angle: Double): Double {
-            var a = angle
-            while (a < 0) {
-                a += 2 * PI
-            }
-            while (a > 2 * PI) {
-                a -= 2 * PI
-            }
-            return a
-        }
-        val ballAngle = processAngle(atan2(this.initialY - this.currentY, this.currentX - this.initialX).toDouble()) //Y is inverted because coordinates go top down
-        val timeAngle = processAngle(this.timeToShootFor.angle())
-        return (abs(ballAngle - timeAngle) / (2 * PI) * 1000).roundToInt()
+        val ballAngle = atan2(this.initialY - this.currentY, this.currentX - this.initialX).toDouble() //Y is inverted because coordinates go top down
+        val timeAngle = this.timeToShootFor.angle()
+        fun angleDistance(a1: Double, a2: Double): Double = abs(atan2(sin(a1 - a2), cos(a1 - a2)))
+        return ((PI - angleDistance(timeAngle, ballAngle)) / PI * 1000).roundToInt()
     }
 
     /**
