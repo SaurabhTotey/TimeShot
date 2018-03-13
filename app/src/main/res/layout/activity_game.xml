@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/ball"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/circle" />
 
         <TextView
@@ -25,15 +25,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="" />
+            android:text=""
+            android:textAppearance="@style/TextAppearance.Wearable.Medium"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/timeBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/scoreBox"
             android:layout_centerHorizontal="true"
             android:text=""
-            android:layout_above="@+id/scoreBox" />
+            android:textAppearance="@style/TextAppearance.Wearable.Medium"
+            android:textColor="@android:color/black" />
 
     </RelativeLayout>
 

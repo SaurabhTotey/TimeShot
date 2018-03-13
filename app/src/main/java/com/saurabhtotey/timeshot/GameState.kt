@@ -11,7 +11,7 @@ class GameState(gameMode: GameMode, val initialX: Float, val initialY: Float, va
     private var numTicksSinceTimeUpdate = 0 //How many update calls the game has had before updating the game's time
     var currentX: Float = initialX //The ball's current X position
     var currentY: Float = initialY //The ball's current Y position
-    val speed = 5 //The ball's max speed; TODO: scale off of length
+    val speed = length / 25 //The ball's max speed; TODO: scale off of length
     var velocityX: Float = 0.toFloat() //The ball's X velocity; can't be changed outside of this class
         private set(value) {
             field = value
