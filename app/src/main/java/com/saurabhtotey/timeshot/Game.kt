@@ -8,7 +8,7 @@ import android.support.wearable.activity.WearableActivity
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import kotlin.math.roundToInt
@@ -59,10 +59,10 @@ class Game : WearableActivity() {
             findViewById<TextView>(R.id.timeBox).setText(this.gameState.timeToShootFor.toString()) //Using property access syntax (.text = ) errors
             if (this.gameState.isFinished) {
                 findViewById<TextView>(R.id.scoreBox).setText(this.gameState.score()!!.toString())
-                findViewById<Button>(R.id.restartButton).visibility = View.VISIBLE
+                findViewById<ImageButton>(R.id.restartButton).visibility = View.VISIBLE
             } else {
                 findViewById<TextView>(R.id.scoreBox).setText("")
-                findViewById<Button>(R.id.restartButton).visibility = View.INVISIBLE
+                findViewById<ImageButton>(R.id.restartButton).visibility = View.INVISIBLE
             }
             this.ball.x = this.gameState.currentX - ball.width / 2
             this.ball.y = this.gameState.currentY - ball.height / 2
